@@ -78,11 +78,19 @@ with col2:
     col2.header('RESULTS OF MODELING:')
     col2.write(f'Spectral radius $R$: **{R:.5f}**.')
 
+    number_of_all_cycles = len(cogn_map.getCycles())
+
     even_cycles = cogn_map.getCycles(only_even = True)
     even_cycles.sort(key=len, reverse=True)
     even_number = len(even_cycles)
 
+    not_even_cycles = cogn_map.getNotEvenCycles()
+    not_even_cycles.sort(key=len, reverse=True)
+    not_even_cycles_number = len(not_even_cycles)
+
+    col2.write(f'Number of all cycles: **{number_of_all_cycles}**.')
     col2.write(f'Number of even cycles: **{even_number}**.')
+    col2.write(f'Number of odd cycles: **{not_even_cycles_number}**')
     col2.write(f'Numerical stability ($R < 1$): **' + ('$+$' if cogn_map.isStable2() else ' -') + '**.')
     col2.write(f'Disruption stability ($R \leq 1$): **' + ('$+$' if cogn_map.isStable() else ' - ') + '**.')
 
@@ -91,6 +99,14 @@ with col2:
         '',
         value='\n'.join(
             [' > '.join([str(i+1) for i in cycle] + [str(cycle[0]+1)]) for cycle in even_cycles]
+        ), height=200
+    )
+
+    col2.write('List of not even cycles:')
+    col2.text_area(
+        '',
+        value='\n'.join(
+            [' > '.join([str(i+1) for i in cycle] + [str(cycle[0]+1)]) for cycle in not_even_cycles]
         ), height=200
     )
 

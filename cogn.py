@@ -25,10 +25,14 @@ class Map:
     
     # Виведення циклів - усі, чи тільки парні
     def getCycles(self, only_even = False):
+        print(self.cycles)
         if only_even:
             return [c for c in self.cycles if self.__evenCheck( c, self.getMatrix() )]
         else:
             return self.cycles
+
+    def getNotEvenCycles(self):
+        return [c for c in self.cycles if self.__notevenCheck( c, self.getMatrix() )]
     
     #@staticmethod
     # визначення чи є цикл парним
@@ -42,6 +46,17 @@ class Map:
         for i in range(len(cycle_copy) - 1 ):
             sign *= np.sign(adj_matrix[cycle_copy[i], cycle_copy[i+1]])
         return sign == 1
+
+    def __notevenCheck(self, cycle, adj_matrix=None):
+        # копія циклу
+        cycle_copy = cycle.copy()
+        cycle_copy.append(cycle[0])
+        
+        # проходження по циклу та підрахунок вершин (кількості проходів - граней)
+        sign = 1
+        for i in range(len(cycle_copy) - 1 ):
+            sign *= np.sign(adj_matrix[cycle_copy[i], cycle_copy[i+1]])
+        return sign == -1
     
     # Беремо радіус власних чисел (тобто малдуль найбільшого) - радіус спектру
     def getRadius(self):
